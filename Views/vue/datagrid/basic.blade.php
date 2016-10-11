@@ -3,21 +3,15 @@
         <thead>
             <tr>
                 <th v-for="(key, value) in header" v-on:click="clickHeader">@{{ key }}</th>
-            </tr>            
+            </tr>
         </thead>
         <tbody>
             <tr v-for="row in rows">
                 <td v-for="(key, value) in row">@{{ value }}</td>
             </tr>
         </tbody>
-        @if(in_array('column_filter', $component->plugins))
-            <tfoot>
-                <tr>
-                    <td v-for="(key, value) in header">
-                        <input type="text" class="form-control">
-                    </td>
-                </tr>            
-            </tfoot>
+        @if ($component->hasPlugin('column_filter'))
+            @yield('column_filter')
         @endif
     </table>
 </div>
@@ -27,8 +21,9 @@
     <script>
     (function() {
         var component = {!! json_encode($component) !!};
-        //console.log(component);
-        
+
+        console.log(component);
+
         //Vue.mixin(sortable);
         var plugins = [];
         //Object.keys(component.plugins).forEach(function(plugin) {
@@ -38,7 +33,7 @@
         component.plugins.forEach(function(plugin) {
             plugins.push(this[plugin]);
         });
-       
+
         new Vue({
             el: '#'+component.id,
 
@@ -83,7 +78,7 @@
 
             methods: {
 
-                clickHeader: function() {
+                clickHeaderX: function() {
                     console.log('click header');
 
                 },

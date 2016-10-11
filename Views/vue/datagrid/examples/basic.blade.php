@@ -17,16 +17,15 @@
     <div>
         <hr>
         <h3>Grid Instance #1</h3>
-        @include('components::vue.datagrid.basic', ['component' => (object) [
-            'id' => 'basic1',
-            /*'source' => '"/app/vfi/"',*/
-            'source' => [
+        @include('components::vue.datagrid.basic', ['component' => new \Mrcore\Components\Component(
+            $id = 'basic1',
+            $source = [
                 ["id" => 1, "key" => "abcd", "name" => "ABCD", "enabled" => true],
                 ["id" => 2, "key" => "efgh", "name" => "EFGH", "enabled" => true],
                 ["id" => 3, "key" => "ijkl", "name" => "IJKL", "enabled" => true],
                 ["id" => 4, "key" => "mnop", "name" => "MNOP", "enabled" => true]
             ],
-            'options' => [
+            $options = [
                 'plugins' => [
                     'sortable' => [
                         'column' => 'name',
@@ -34,11 +33,11 @@
                     ]
                 ]
             ],
-            'plugins' => [
+            $plugins = [
                 'sortable',
                 'column_filter'
-            ],
-        ]])
+            ]
+        )])
 
     </div>
 
