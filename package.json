@@ -1,0 +1,16 @@
+{
+    "name": "Mrcore/Components",
+    "version": "1.0.0",
+    "author": "Matthew Reschke <mail@mreschke.com>",
+    "license": "MIT",
+    "private": true,
+    "description": "Mrcore GUI Components Application",
+    "scripts": {
+        "prod": "gulp --production",
+        "dev": "gulp watch"
+    },
+    "devDependencies": {
+        "gulp": "^3.9.1",
+        "laravel-elixir": "^6.0.0-9",
+    }
+}
