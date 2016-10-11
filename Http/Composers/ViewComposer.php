@@ -20,13 +20,13 @@ class ViewComposer
         $view->with('navTitle', 'Navigation');
         $view->with('navItems', [
             ['key' => 'dashboard', 'display' => 'Dashboard', 'url' => '/app/gui-components'],
-            ['key' => 'datagrid', 'display' => 'Datagrid', 'subnav' => [
-                ['key' => 'datagrid-basic', 'display' => 'Basic', 'url' => '/app/gui-components/examples/datagrid/basic'],
-                ['key' => 'datagrid-advanced', 'display' => 'Advanced', 'url' => '/app/gui-components/examples/datagrid/advanced']
+            ['key' => 'datagrid', 'display' => 'Vue Datagrid', 'subnav' => [
+                ['key' => 'datagrid-basic', 'display' => 'Basic', 'url' => '/app/gui-components/examples/vue/datagrid/basic'],
+                ['key' => 'datagrid-advanced', 'display' => 'Advanced', 'url' => '/app/gui-components/examples/vue/datagrid/advanced']
             ]],
-            ['key' => 'datatables', 'display' => 'Datatables', 'subnav' => [
-                ['key' => 'datatables-basic', 'display' => 'Basic', 'url' => '/app/gui-components/examples/datatable/basic'],
-                ['key' => 'datatables-advanced', 'display' => 'Advanced', 'url' => '/app/gui-components/examples/datatable/advanced']
+            ['key' => 'datatables', 'display' => 'Jquery Datatables', 'subnav' => [
+                ['key' => 'datatables-basic', 'display' => 'Basic', 'url' => '/app/gui-components/examples/jquery/datatable/basic'],
+                ['key' => 'datatables-advanced', 'display' => 'Advanced', 'url' => '/app/gui-components/examples/jquery/datatable/advanced']
             ]],
         ]);
     }

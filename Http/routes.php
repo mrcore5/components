@@ -19,8 +19,8 @@ Route::get('/', 'ExamplesController@showDashboard');
 
 Route::group(['prefix' => 'examples'], function() {
 
-    Route::get('datagrid/basic', 'Vue\DatagridController@basicExample');
+    Route::get('vue/datagrid/basic', 'Vue\DatagridController@basicExample');
 
-    Route::get('datatable/basic', 'Jquery\DatatablesController@basicExample');
+    Route::get('jquery/datatable/basic', 'Jquery\DatatablesController@basicExample');
 
 });
