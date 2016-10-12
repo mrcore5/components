@@ -1,23 +1,26 @@
-<? namespace Mrcore\Components;
+<? namespace Mrcore\Components\Components\Vue;
 
-class Component
+use Mrcore\Components\Components\Component;
+
+class Datagrid extends Component
 {
     public $id;
     public $source;
     public $options;
     public $plugins;
 
-    public function __construct($id, $source, $options, $plugins)
+    public function __construct($id, $source, $options = [], $plugins = [])
     {
         $this->id = $id;
         $this->source = $source;
         $this->options = $options;
         $this->plugins = $plugins;
+
         return $this;
     }
 
     public function hasPlugin($plugin)
     {
-        return true;
+        return (in_array($plugin, $this->plugins)) ? true : false;
     }
 }

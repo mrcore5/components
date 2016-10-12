@@ -2,12 +2,12 @@
     <table class="table table-striped table-hover table-condensed">
         <thead>
             <tr>
-                <th v-for="(key, value) in header" v-on:click="clickHeader">@{{ key }}</th>
+                <th v-for="(key, value) in columns" v-bind:class="columns[key].class" v-on:click="clickHeader(key)">@{{ key | capitalize }}</th>
             </tr>
         </thead>
         <tbody>
             <tr v-for="row in rows">
-                <td v-for="(key, value) in row">@{{ value }}</td>
+                <td v-for="(key, value) in row">@{{{ value }}}</td>
             </tr>
         </tbody>
         @if ($component->hasPlugin('column_filter'))
@@ -19,36 +19,16 @@
 @section('script')
 @parent
     <script>
+
     (function() {
         var component = {!! json_encode($component) !!};
-
-        console.log(component);
-
-        //Vue.mixin(sortable);
-        var plugins = [];
-        //Object.keys(component.plugins).forEach(function(plugin) {
-        //    plugins[plugin] = this[plugin];
-            //plugins.push(this[plugin]);
-        //});
-        component.plugins.forEach(function(plugin) {
-            plugins.push(this[plugin]);
-        });
 
         new Vue({
             el: '#'+component.id,
 
-            /*mixins: function() {
-                return [sortable];
-            },*/
-            //mixins: [this['sortable']],
-            //mixins: this[component.plugins],
-            //mixins: component.plugins,
-            //mixins: [sortable],
-            //mixins: eval(gg),
-            mixins: plugins,
-            //mixins: component.plugins.forEach(function(gg) {
-            //    return this[gg];
-            //}),
+            mixins: _.map(component.plugins, function (plugin) {
+                return this[plugin];
+            }),
 
             data: {
                 source: component.source,
@@ -56,17 +36,22 @@
                 plugins: component.plugins,
                 state: {
                     isLoaded: false,
-                    sortOrder: 'desc',
-                    sortColumn: '',
-                    currentPage: 0,
+                    queryString: '',
                 }
             },
 
             computed: {
 
-                header: function() {
-                    if ('columns' in this.options) return this.options.columns;
-                    if (this.rows.length > 0) return this.rows[0];
+                columns: function() {
+                    let columns = {};
+                    if ('columns' in this.options) columns = this.options.columns;
+                    if (this.rows.length > 0) columns = _.clone(this.rows[0]);
+
+                    _.forEach(columns, function (value, key) {
+                        columns[key] = { "value": value };
+                    });
+
+                    return columns;
                 },
 
                 rows: function() {
@@ -78,14 +63,20 @@
 
             methods: {
 
-                clickHeaderX: function() {
-                    console.log('click header');
+                clickHeader: function(key) {
+                    console.log('click header ' + key);
+                    this.$emit('table:header:click', key);
 
                 },
 
                 loadData: function() {
                     // ajax load data
-                }
+                },
+
+                /*columnHeaderClass: function(key) {
+                    this.columns[key].class = (_.has(this.columns[key], 'class')) ? this.columns[key].class + ' common' : 'common';
+                    return this.columns[key].class;
+                }*/
             }
         });
     })();

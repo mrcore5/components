@@ -1,7 +1,7 @@
 @section('column_filter')
     <tfoot>
         <tr>
-            <td v-for="(key, value) in header">
+            <td v-for="(key, value) in columns">
                 <input type="text" class="form-control">
             </td>
         </tr>
