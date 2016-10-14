@@ -10,7 +10,7 @@
             },
 
             created: function () {
-                this.$on('table:header:click', this.sortColumn);
+                eventBus.$on('table:header:click', this.sortColumn);
                 this.setHeaderClass();
             },
 
