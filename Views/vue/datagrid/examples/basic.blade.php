@@ -49,12 +49,7 @@
         <h3>Grid Instance #2</h3>
         @include('components::vue.datagrid.basic', ['component' => new \Mrcore\Components\Components\Vue\Datagrid(
             $id = 'basic2',
-            $source = [
-                ["id" => 1, "key" => "abcd", "name" => "ABCD", "enabled" => true],
-                ["id" => 2, "key" => "efgh", "name" => "EFGH", "enabled" => true],
-                ["id" => 3, "key" => "ijkl", "name" => "IJKL", "enabled" => true],
-                ["id" => 4, "key" => "mnop", "name" => "MNOP", "enabled" => true]
-            ],
+            $source = '/app/vfi/dms',
             $options = [
                 'plugins' => [
                     'sortable' => [

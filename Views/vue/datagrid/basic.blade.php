@@ -2,12 +2,12 @@
     <table class="table table-striped table-hover table-condensed">
         <thead>
             <tr>
-                <th v-for="(key, value) in columns" v-bind:class="columns[key].class" v-on:click="clickHeader(key)">@{{ key | capitalize }}</th>
+                <th v-for="(value, key) in columns" v-bind:class="columns[key].class" v-on:click="clickHeader(key)">@{{ _.capitalize(key) }}</th>
             </tr>
         </thead>
         <tbody>
-            <tr v-for="row in rows">
-                <td v-for="(key, value) in row">@{{{ value }}}</td>
+            <tr v-for="row in state.rows">
+                <td v-for="(value, key) in row" v-html="value"></td>
             </tr>
         </tbody>
         @if ($component->hasPlugin('column_filter'))
@@ -35,27 +35,31 @@
                 plugins: component.plugins,
                 state: {
                     isLoaded: false,
+                    rows: [],
                     queryString: '',
                 }
+            },
+
+            created: function () {
+                if (typeof this.source === 'string') {
+                    this.loadData();
+                } else {
+                    this.state.rows = this.source;
+                }
+
             },
 
             computed: {
 
                 columns: function() {
-                    let columns = {};
+                    var columns = {};
                     if ('columns' in this.options) columns = this.options.columns;
-                    if (this.rows.length > 0) columns = _.clone(this.rows[0]);
-
+                    if (this.state.rows.length > 0) columns = _.clone(this.state.rows[0]);
                     _.forEach(columns, function (value, key) {
                         columns[key] = { "value": value };
                     });
 
                     return columns;
-                },
-
-                rows: function() {
-                    if (typeof this.source === 'string') return this.loadData();
-                    return this.source;
                 },
 
             },
@@ -64,12 +68,18 @@
 
                 clickHeader: function(key) {
                     console.log('click header ' + key);
-                    this.$emit('table:header:click', key);
-
+                    eventBus.$emit('table:header:click', key);
                 },
 
                 loadData: function() {
-                    // ajax load data
+                    $.ajax({
+                        url: this.source + '/data',
+                        dataType: 'json',
+                        async: true,
+                       success: function(data) {
+                           this.state.rows = data.records
+                        }.bind(this),
+                    });
                 },
 
                 /*columnHeaderClass: function(key) {
