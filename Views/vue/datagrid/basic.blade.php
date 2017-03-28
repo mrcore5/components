@@ -19,7 +19,6 @@
 @section('script')
 @parent
     <script>
-
     (function() {
         var component = {!! json_encode($component) !!};
 
