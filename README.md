@@ -1,4 +1,4 @@
-## Mrcore GUI Components v1.0
+## Mrcore GUI Components v2.0
 
 This is an mRcore module that contains various Jquery, Vue.js and React GUI components.
 
@@ -16,7 +16,7 @@ For this module, well, there is not much.  See also https://github.com/mcore5/fr
 
 ## Versions
 
-* 1.0 is for Laravel 5.3 and above
+* 2.0 is for Laravel 5.3 and above
 
 ## Contributing
 
