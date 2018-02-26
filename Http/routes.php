@@ -23,4 +23,6 @@ Route::group(['prefix' => 'examples'], function() {
 
     Route::get('jquery/datatable/basic', 'Jquery\DatatablesController@basicExample');
 
+    Route::get('bootstrap/components', 'Bootstrap\BootstrapController@components');
+
 });

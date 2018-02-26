@@ -28,6 +28,9 @@ class ViewComposer
                 ['key' => 'datatables-basic', 'display' => 'Basic', 'url' => '/app/gui-components/examples/jquery/datatable/basic'],
                 ['key' => 'datatables-advanced', 'display' => 'Advanced', 'url' => '/app/gui-components/examples/jquery/datatable/advanced']
             ]],
+            ['key' => 'bootstrap', 'display' => 'Bootstrap', 'subnav' => [
+                ['key' => 'components', 'display' => 'Components', 'url' => '/app/gui-components/examples/bootstrap/components'],
+            ]],
         ]);
     }
 }
