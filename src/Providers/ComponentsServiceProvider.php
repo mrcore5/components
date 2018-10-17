@@ -20,6 +20,32 @@ class ComponentsServiceProvider extends ServiceProvider
     protected $defer = false;
 
     /**
+     * Register the service provider.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        // Mrcore Module Tracking
+        Module::trace(get_class(), __function__);
+
+        // Register facades and class aliases
+        $this->registerFacades();
+
+        // Register configs
+        $this->registerConfigs();
+
+        // Register services
+        $this->registerServices();
+
+        // Register testing environment
+        $this->registerTestingEnvironment();
+
+        // Register mrcore modules
+        $this->registerModules();
+    }
+
+    /**
      * Bootstrap the application services.
      *
      * @return void
@@ -49,36 +75,12 @@ class ComponentsServiceProvider extends ServiceProvider
 
         // Register mrcore layout overrides
         $this->registerLayout();
-    }
-
-    /**
-     * Register the service provider.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        // Mrcore Module Tracking
-        Module::trace(get_class(), __function__);
-
-        // Register facades and class aliases
-        $this->registerFacades();
-
-        // Register configs
-        $this->registerConfigs();
-
-        // Register services
-        $this->registerServices();
 
         // Register artisan commands
         $this->registerCommands();
-
-        // Register testing environment
-        $this->registerTestingEnvironment();
-
-        // Register mrcore modules
-        $this->registerModules();
     }
+
+
 
     /**
      * Register facades and class aliases.
@@ -122,30 +124,14 @@ class ComponentsServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register artisan commands.
-     * @return void
-     */
-    protected function registerCommands()
-    {
-        if (!$this->app->runningInConsole()) {
-            return;
-        }
-        #$this->commands([
-        #    \Mrcore\Components\Console\Commands\AppCommand::class
-        #]);
-    }
-
-    /**
      * Register test environment overrides
      *
      * @return void
      */
     public function registerTestingEnvironment()
     {
-        // Register testing environment
-        if ($this->app->environment('testing')) {
-            //
-        }
+        // Does not apply if NOT running in 'testing' mode
+        if (!$this->app->environment('testing')) return;
     }
 
     /**
@@ -167,9 +153,9 @@ class ComponentsServiceProvider extends ServiceProvider
      */
     protected function registerPublishers()
     {
-        if (!$this->app->runningInConsole()) {
-            return;
-        }
+        // Only applies if running in console
+        if (!$this->app->runningInConsole()) return;
+
         /*
         // Register additional css assets with mrcore Layout
         Layout::css('css/wiki-bundle.css');
@@ -204,10 +190,11 @@ class ComponentsServiceProvider extends ServiceProvider
      */
     protected function registerMigrations()
     {
-        if (!$this->app->runningInConsole()) {
-            return;
-        }
-        #$this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+        // Only applies if running in console
+        if (!$this->app->runningInConsole()) return;
+
+        // Register Migrations
+        #$this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
     }
 
     /**
@@ -246,7 +233,13 @@ class ComponentsServiceProvider extends ServiceProvider
         #$kernel->pushMiddleware('Mrcore\Components\Http\Middleware\DoSomething');
 
         // Register route based middleware
-        #$router->middleware('auth.components', 'Mrcore\Components\Http\Middleware\Authenticate');
+        // FIXME Laravel version 5.3 vs 5.5 hack, remove when 5.3 is deprecated at dynatron
+        #$version = app()->version();
+        #if (substr($version, 0, 3) == '5.3') {
+            #$router->middleware('auth.admin', \Mrcore\Components\Http\Middleware\AuthenticateAdmin::class);
+        #} else {
+            #$router->aliasMiddleware('auth.admin', \Mrcore\Components\Http\Middleware\AuthenticateAdmin::class);
+        #}
     }
 
     /**
@@ -272,6 +265,9 @@ class ComponentsServiceProvider extends ServiceProvider
      */
     protected function registerSchedules()
     {
+        // Only applies if running in console
+        if (!$this->app->runningInConsole()) return;
+
         // Register all task schedules for this hostname ONLY if running from the schedule:run command
         /*if (app()->runningInConsole() && isset($_SERVER['argv'][1]) && $_SERVER['argv'][1] == 'schedule:run') {
 
@@ -297,15 +293,29 @@ class ComponentsServiceProvider extends ServiceProvider
      */
     protected function registerLayout()
     {
-        if ($this->app->runningInConsole()) {
-            return;
-        }
+        // Does not apply if running in console
+        if ($this->app->runningInConsole()) return;
 
         // Register additional css assets with mrcore Layout
         #Layout::css('css/wiki-bundle.css');
 
         // Share data wiht all views
         #View::share('key', 'value');
+    }
+
+        /**
+     * Register artisan commands.
+     * @return void
+     */
+    protected function registerCommands()
+    {
+        // Only applies if running in console
+        if (!$this->app->runningInConsole()) return;
+
+        // Register Commands
+        #$this->commands([
+        #    \Mrcore\Components\Console\Commands\AppCommand::class
+        #]);
     }
 
     /**
@@ -315,7 +325,8 @@ class ComponentsServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        // Only required if $defer = true and you add bindings
-        //return ['Mrcore\Components\Stuff', 'other bindings...'];
+        // Only required if $defer = true and you add bindings in register()
+        // Only use if the provier is super simple and basically only has a simle binding
+        //return ['Mrcore\Appstub\Stuff', 'other bindings...'];
     }
 }

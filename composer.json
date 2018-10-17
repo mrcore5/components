@@ -1,8 +1,9 @@
 {
     "name": "mrcore/components",
-    "type": "library",
     "description": "Mrcore GUI Components Application",
     "keywords": ["laravel", "mrcore", "mrcore5", "framework"],
+    "homepage": "http://github.com/mrcore5/components",
+    "type": "library",
     "license": "MIT",
     "support": {
         "issues": "https://github.com/mrcore5/components/issues",
@@ -16,7 +17,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Mrcore\\Components\\": ""
+            "Mrcore\\Components\\": "src/"
         }
     }
 }
